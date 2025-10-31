@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include QMK_KEYBOARD_H
 #include "layers.h"
 
 enum custom_keycodes {

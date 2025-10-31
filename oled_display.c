@@ -1,6 +1,6 @@
-
 #include QMK_KEYBOARD_H
 #include "oled_display.h"
+#include "layers.h"
 
 #ifdef WPM_ENABLE
 #    include "wpm.h"
