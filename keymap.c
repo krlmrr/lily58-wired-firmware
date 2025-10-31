@@ -1,7 +1,6 @@
 #include QMK_KEYBOARD_H
 #include QMK_KEYBOARD_H
 #include "layers.h"
-#include "oled_display.h"
 
 enum custom_keycodes {
     ARROW = SAFE_RANGE, // "->"

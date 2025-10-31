@@ -1,9 +1,7 @@
 
-
-#include "oled_display.h"
-
 #include QMK_KEYBOARD_H
 #include "oled_display.h"
+
 #ifdef WPM_ENABLE
 #    include "wpm.h"
 #endif
