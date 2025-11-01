@@ -12,3 +12,6 @@
 #define OLED_DRIVER_ENABLE
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 6
+
+#define COMBO_COUNT 1
+#define COMBO_TERM 50 // time window (ms) to count as a combo

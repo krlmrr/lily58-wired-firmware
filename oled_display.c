@@ -30,18 +30,21 @@ static uint8_t  heartbeat_frame      = 0;
 #define ROW_BOTTOM 14
 
 // --- Static strings in PROGMEM ---
-static const char LAYER_BASE[] PROGMEM  = "BASE";
+static const char LAYER_BASE[] PROGMEM  = "macOS";
+static const char LAYER_WIN[] PROGMEM   = "Win";
+static const char LAYER_LIN[] PROGMEM   = "Linux";
 static const char LAYER_LOWER[] PROGMEM = "LOWER";
 static const char LAYER_RAISE[] PROGMEM = "RAISE";
 static const char LAYER_ADJ[] PROGMEM   = "ADJUST";
+
+// --- Layer array ---
+static const char *const LAYERS[] PROGMEM = {LAYER_BASE, LAYER_WIN, LAYER_LIN, LAYER_LOWER, LAYER_RAISE, LAYER_ADJ};
 
 static const char MOD_CTRL[] PROGMEM  = "Ctrl";
 static const char MOD_SHIFT[] PROGMEM = "Shift";
 static const char MOD_ALT[] PROGMEM   = "Alt";
 static const char MOD_GUI[] PROGMEM   = "GUI";
 
-static const char WIN_OS[] PROGMEM    = "Win";
-static const char MAC_OS[] PROGMEM    = "macOS";
 static const char CAPS_STR[] PROGMEM  = "CAP ";
 static const char KM_STR[] PROGMEM    = "KM  ";
 static const char WPM_LABEL[] PROGMEM = "WPM:";
@@ -50,9 +53,6 @@ static const char WPM_LABEL[] PROGMEM = "WPM:";
 static const char HEART_FRAME_1[] PROGMEM = "\x04"; // bigger heart glyph
 static const char HEART_FRAME_2[] PROGMEM = "\x03"; // small heart glyph
 static const char HEART_FRAME_3[] PROGMEM = " ";    // off
-
-// --- Layer array ---
-static const char *const LAYERS[] PROGMEM = {LAYER_BASE, LAYER_LOWER, LAYER_RAISE, LAYER_ADJ};
 
 // --- Modifier array ---
 static const char *const MODS[] PROGMEM = {MOD_CTRL, MOD_SHIFT, MOD_ALT, MOD_GUI};
@@ -116,13 +116,6 @@ bool oled_task_user(void) {
             oled_write_ln(modbuf, mods & (MOD_MASK_CTRL << i));
         }
 
-        // --- CG_TOGG status ---
-        oled_set_cursor(0, ROW_CG_TOGG);
-        if (keymap_config.swap_lctl_lgui) {
-            oled_write_ln_P(WIN_OS, false);
-        } else {
-            oled_write_ln_P(MAC_OS, false);
-        }
 #ifdef WPM_ENABLE
         oled_set_cursor(0, ROW_WPM_LABEL);
         oled_write_ln_P(WPM_LABEL, false);
@@ -132,7 +125,6 @@ bool oled_task_user(void) {
         snprintf(wpm_str, sizeof(wpm_str), " %03d", get_current_wpm());
         oled_write_ln(wpm_str, false);
 #endif
-
         // --- Bottom row: KM/CAPS + heartbeat animation ---
         oled_set_cursor(0, ROW_BOTTOM);
         oled_write_P(is_caps_word_on() ? CAPS_STR : KM_STR, false);
