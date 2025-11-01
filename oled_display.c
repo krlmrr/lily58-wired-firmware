@@ -9,11 +9,6 @@
 #    include "caps_word.h"
 #endif
 
-// --- OLED dimming configuration ---
-#define OLED_DIM_TIMEOUT 5000 // milliseconds
-#define OLED_DIM_LEVEL 128    // default half brightness
-static uint16_t oled_timer_activity = 0;
-
 // --- Heartbeat configuration ---
 #define HEARTBEAT_INTERVAL 300 // ms between frames
 #define HEARTBEAT_FRAMES 3
@@ -84,15 +79,6 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 // --- OLED display task ---
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        // --- Activity timer & dimming ---
-        if (get_current_wpm() > 0 || get_mods()) {
-            oled_timer_activity = timer_read();
-            oled_set_brightness(255); // full brightness
-        }
-        if (timer_elapsed(oled_timer_activity) > OLED_DIM_TIMEOUT) {
-            oled_set_brightness(OLED_DIM_LEVEL);
-        }
-
         // --- Heartbeat animation ---
         if (timer_elapsed(oled_timer_heartbeat) > HEARTBEAT_INTERVAL) {
             oled_timer_heartbeat = timer_read();
@@ -142,15 +128,6 @@ bool oled_task_user(void) {
         }
 
     } else {
-        // --- Activity timer & dimming (apply same rules as master) ---
-        if (get_current_wpm() > 0 || get_mods()) {
-            oled_timer_activity = timer_read();
-            oled_set_brightness(255); // full brightness
-        }
-        if (timer_elapsed(oled_timer_activity) > OLED_DIM_TIMEOUT) {
-            oled_set_brightness(OLED_DIM_LEVEL);
-        }
-
         // --- Heartbeat animation for slave ---
         if (timer_elapsed(oled_timer_heartbeat) > HEARTBEAT_INTERVAL) {
             oled_timer_heartbeat = timer_read();
