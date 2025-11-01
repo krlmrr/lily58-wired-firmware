@@ -2,18 +2,26 @@
 #include "layers.h"
 
 enum custom_keycodes {
-    ARROW = SAFE_RANGE,  // "->"
-    DBLARROW,            // "=>"
-    RETURN,              // "return"
+    ARROW = SAFE_RANGE, // "->"
+    DBLARROW,           // "=>"
+    RETURN,             // "return"
+    QWERTY_LAYER,       // Custom keycode for QWERTY layer
+    WIN_LAYER,          // Custom keycode for WIN layer
+    LIN_LAYER           // Custom keycode for LIN layer
 };
 
 #define send_string_on_press(record, string) \
-    do { \
-        if ((record)->event.pressed) { \
-            SEND_STRING(string); \
-        } \
-        return false; \
+    do {                                     \
+        if ((record)->event.pressed) {       \
+            SEND_STRING(string);             \
+        }                                    \
+        return false;                        \
     } while (0)
+
+void set_and_persist_layer(uint8_t layer) {
+    layer_state_set(1UL << layer);
+    set_single_persistent_default_layer(layer);
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -23,9 +31,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             send_string_on_press(record, "=>");
         case RETURN:
             send_string_on_press(record, "return");
+        case QWERTY_LAYER:
+            if (record->event.pressed) {
+                set_and_persist_layer(_QWERTY);
+            }
+            return false;
+        case WIN_LAYER:
+            if (record->event.pressed) {
+                set_and_persist_layer(_WIN);
+            }
+            return false;
+        case LIN_LAYER:
+            if (record->event.pressed) {
+                set_and_persist_layer(_LIN);
+            }
+            return false;
     }
     return true;
 }
+
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
@@ -61,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_RAISE] = LAYOUT(
-        TO(_QWERTY), TO(_WIN), TO(_LIN), KC_NO, KC_NO, KC_NO,      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        QWERTY_LAYER, WIN_LAYER, LIN_LAYER, KC_NO, KC_NO, KC_NO,      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS,       KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
@@ -75,5 +100,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS,       KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
-TRNS),
 };
