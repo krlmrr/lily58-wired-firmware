@@ -1,10 +1,13 @@
 #include QMK_KEYBOARD_H
 #include "oled_display.h"
-#include <string.h> // for strlen
 
 // Dimensions of the display
 #define OLED_WIDTH 5
 #define OLED_HEIGHT 15
+
+// Ball size
+#define BALL_WIDTH 2
+#define BALL_HEIGHT 2
 
 // Ball state
 static int8_t   ball_x      = 0;
@@ -12,10 +15,7 @@ static int8_t   ball_y      = 0;
 static int8_t   vel_x       = 1;
 static int8_t   vel_y       = 1;
 static uint16_t last_update = 0;
-#define BALL_INTERVAL 200 // ms between ball moves
-
-// Ball string (1 to 3 characters)
-static const char *BALL_STR = "km"; // change to "@", "km", or "abc"
+#define BALL_INTERVAL 150 // ms between ball moves
 
 // Clear the screen
 void oled_clear_screen(void) {
@@ -25,10 +25,12 @@ void oled_clear_screen(void) {
     }
 }
 
-// Draw the ball
+// Draw the 2x2 ball
 void oled_draw_ball(void) {
-    oled_set_cursor(ball_x, ball_y);
-    oled_write(BALL_STR, false);
+    for (uint8_t y = 0; y < BALL_HEIGHT; y++) {
+        oled_set_cursor(ball_x, ball_y + y);
+        oled_write("@@", false); // 2 characters wide
+    }
 }
 
 // Update ball position (timed)
@@ -36,21 +38,19 @@ void oled_update_ball(void) {
     if (timer_elapsed(last_update) < BALL_INTERVAL) return;
     last_update = timer_read();
 
-    uint8_t ball_width = strlen(BALL_STR);
-
     // Move the ball
     ball_x += vel_x;
     ball_y += vel_y;
 
-    // Bounce off edges considering ball width
-    if (ball_x <= 0 || ball_x + ball_width > OLED_WIDTH) vel_x = -vel_x;
-    if (ball_y <= 0 || ball_y >= OLED_HEIGHT - 1) vel_y = -vel_y;
+    // Bounce if hitting edges
+    if (ball_x < 0 || ball_x > OLED_WIDTH - BALL_WIDTH) vel_x = -vel_x;
+    if (ball_y < 0 || ball_y > OLED_HEIGHT - BALL_HEIGHT) vel_y = -vel_y;
 
-    // Keep inside bounds
+    // Clamp inside bounds
     if (ball_x < 0) ball_x = 0;
-    if (ball_x + ball_width > OLED_WIDTH) ball_x = OLED_WIDTH - ball_width;
+    if (ball_x > OLED_WIDTH - BALL_WIDTH) ball_x = OLED_WIDTH - BALL_WIDTH;
     if (ball_y < 0) ball_y = 0;
-    if (ball_y >= OLED_HEIGHT) ball_y = OLED_HEIGHT - 1;
+    if (ball_y > OLED_HEIGHT - BALL_HEIGHT) ball_y = OLED_HEIGHT - BALL_HEIGHT;
 }
 
 // OLED task for secondary display

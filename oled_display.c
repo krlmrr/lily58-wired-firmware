@@ -11,6 +11,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_task_left();
+        // oled_task_right(); // Here for testing on the main display
     } else {
         oled_task_right();
     }
