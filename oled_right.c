@@ -29,7 +29,7 @@ void oled_clear_screen(void) {
 void oled_draw_ball(void) {
     for (uint8_t y = 0; y < BALL_HEIGHT; y++) {
         oled_set_cursor(ball_x, ball_y + y);
-        oled_write("@@", false); // 2 characters wide
+        oled_write("**", false); // 2 characters wide
     }
 }
 
