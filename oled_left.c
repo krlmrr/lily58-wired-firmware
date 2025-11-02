@@ -63,7 +63,10 @@ void draw_separator(uint8_t row) {
 // --- Get current active layer name ---
 const char *get_layer_name(void) {
     static char buf[12];
-    uint8_t     l = get_highest_layer(layer_state);
+
+    // Check the persistent default layer if no active layer is set
+    uint8_t l = layer_state ? get_highest_layer(layer_state) : get_highest_layer(default_layer_state);
+
     if (l > _ADJUST) l = 0;
     const char *ptr = (const char *)pgm_read_ptr(&LAYERS[l]);
     strcpy_P(buf, ptr);

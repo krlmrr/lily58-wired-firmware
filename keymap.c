@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "layers.h"
+#include <stdint.h>
+#include "quantum.h"
 
 enum custom_keycodes {
     ARROW = SAFE_RANGE, // "->"
