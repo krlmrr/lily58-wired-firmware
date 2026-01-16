@@ -8,3 +8,30 @@
 #define OLED_TIMEOUT 0
 #define OLED_DRIVER_ENABLE
 #define DYNAMIC_KEYMAP_LAYER_COUNT 6
+#define COMBO_TERM 300
+
+// Disable RGB Light to avoid conflicts
+#undef RGBLED_NUM
+#define RGBLED_NUM 0
+
+// RGB Matrix Configuration - back to D3
+#undef WS2812_DI_PIN
+#define WS2812_DI_PIN D3
+#define RGB_MATRIX_LED_COUNT 18  // What actually works: 12 underglow + 6 per-key top row
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
+#define RGB_MATRIX_KEYPRESSES
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define ENABLE_RGB_MATRIX_SOLID_COLOR
+#define ENABLE_RGB_MATRIX_BREEDING
+#define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+#define RGB_MATRIX_SLEEP
+#define RGB_MATRIX_SPLIT { 18, 0 }  // Only what works
+
+// Split keyboard RGB configuration for per-key addressable RGB
+#define SPLIT_LED_STATE_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_MODS_ENABLE
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
+#define RGB_MATRIX_DEFAULT_HUE 0
+#define RGB_MATRIX_DEFAULT_SAT 0
+#define RGB_MATRIX_DEFAULT_VAL 128
