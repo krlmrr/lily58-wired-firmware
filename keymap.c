@@ -7,12 +7,9 @@ enum custom_keycodes {
     ARROW = SAFE_RANGE, // "->"
     DBLARROW,           // "=>"
     RETURN,             // "return"
-    QWERTY_LAYER,       // Custom keycode for QWERTY layer
-    WIN_LAYER,          // Custom keycode for WIN layer
-    LIN_LAYER,          // Custom keycode for LIN layer
-    GAME_LAYER,         // Custom keycode for GAME layer
-    MY_MEH              // ctrl+alt+gui (hold modifier)
 };
+
+#define MY_MEH LCAG(KC_NO)
 
 // Home-row mods (testing)
 #define HRM_S MT(MOD_LALT, KC_S)
@@ -29,10 +26,6 @@ enum custom_keycodes {
         }                                    \
         return false;                        \
     } while (0)
-
-void set_and_persist_layer(uint8_t layer) {
-    set_single_persistent_default_layer(layer);
-}
 
 static bool is_home_row_mod(uint16_t keycode) {
     switch (keycode) {
@@ -63,6 +56,10 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_
     return 0;
 }
 
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case ARROW:
@@ -71,33 +68,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             send_string_on_press(record, "=>");
         case RETURN:
             send_string_on_press(record, "return");
-        case QWERTY_LAYER:
-            if (record->event.pressed) {
-                set_and_persist_layer(_QWERTY);
-            }
-            return false;
-        case WIN_LAYER:
-            if (record->event.pressed) {
-                set_and_persist_layer(_WIN);
-            }
-            return false;
-        case LIN_LAYER:
-            if (record->event.pressed) {
-                set_and_persist_layer(_LIN);
-            }
-            return false;
-        case GAME_LAYER:
-            if (record->event.pressed) {
-                set_and_persist_layer(_GAME);
-            }
-            return false;
-        case MY_MEH:
-            if (record->event.pressed) {
-                register_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI));
-            } else {
-                unregister_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI));
-            }
-            return false;
     }
     return true;
 }
@@ -132,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_LOWER] = LAYOUT(KC_NO, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_UNDS, KC_TRNS, KC_HASH, KC_AMPR, KC_LCBR, KC_RCBR, KC_NO, KC_NO, KC_EQUAL, KC_NO, ARROW, DBLARROW, KC_NO, KC_TRNS, KC_EXLM, KC_DLR, KC_LPRN, KC_RPRN, KC_NO, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_NO, KC_NO, KC_TRNS, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, RETURN, KC_TRNS, KC_DEL, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 
-    [_RAISE] = LAYOUT(KC_NO, QWERTY_LAYER, WIN_LAYER, LIN_LAYER, GAME_LAYER, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_DEL, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+    [_RAISE] = LAYOUT(KC_NO, PDF(_QWERTY), PDF(_WIN), PDF(_LIN), PDF(_GAME), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_DEL, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 
-    [_ADJUST] = LAYOUT(TO(_QWERTY), TO(_WIN), TO(_LIN), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+    [_ADJUST] = LAYOUT(KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 };

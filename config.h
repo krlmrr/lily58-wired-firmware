@@ -1,16 +1,14 @@
 #pragma once
 
 #define QUICK_TAP_TERM 0
-#define TAPPING_TERM_PER_KEY
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 #define TAPPING_TERM 250
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 #define PERMISSIVE_HOLD_PER_KEY
 #define FLOW_TAP_TERM 150
 #define OLED_TIMEOUT 0
-#define OLED_DRIVER_ENABLE
-#define DYNAMIC_KEYMAP_LAYER_COUNT 7
 #define COMBO_TERM 300
+#define LAYER_STATE_8BIT
 
 // Split keyboard configuration
 #define EE_HANDS

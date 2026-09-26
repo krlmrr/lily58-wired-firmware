@@ -2,7 +2,6 @@
 #include "oled_display.h"
 #include "layers.h"
 #include "transactions.h"
-#include "oled_right.c"
 #include "oled_left.c"
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {

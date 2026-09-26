@@ -18,7 +18,6 @@ static uint8_t  heartbeat_frame      = 0;
 #define ROW_LAYER 0
 #define ROW_SEP1 2
 #define ROW_MOD_START 4
-#define ROW_CG_TOGG 9
 #define ROW_WPM_LABEL 10
 #define ROW_WPM_COUNT 11
 #define ROW_BOTTOM 14
@@ -99,9 +98,8 @@ bool oled_task_left(void) {
     oled_write_ln_P(WPM_LABEL, false);
 
     oled_set_cursor(0, ROW_WPM_COUNT);
-    char wpm_str[16];
-    snprintf(wpm_str, sizeof(wpm_str), " %03d", get_current_wpm());
-    oled_write_ln(wpm_str, false);
+    oled_write_P(PSTR(" "), false);
+    oled_write_ln(get_u8_str(get_current_wpm(), '0'), false);
 #endif
 
     oled_set_cursor(0, ROW_BOTTOM);
