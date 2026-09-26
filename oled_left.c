@@ -27,12 +27,13 @@ static uint8_t  heartbeat_frame      = 0;
 static const char LAYER_BASE[] PROGMEM  = "macOS";
 static const char LAYER_WIN[] PROGMEM   = "Win";
 static const char LAYER_LIN[] PROGMEM   = "Linux";
+static const char LAYER_GAME[] PROGMEM  = "Game";
 static const char LAYER_LOWER[] PROGMEM = "LOWER";
 static const char LAYER_RAISE[] PROGMEM = "RAISE";
 static const char LAYER_ADJ[] PROGMEM   = "ADJUST";
 
 // --- Layer array ---
-static const char *const LAYERS[] PROGMEM = {LAYER_BASE, LAYER_WIN, LAYER_LIN, LAYER_LOWER, LAYER_RAISE, LAYER_ADJ};
+static const char *const LAYERS[] PROGMEM = {LAYER_BASE, LAYER_WIN, LAYER_LIN, LAYER_GAME, LAYER_LOWER, LAYER_RAISE, LAYER_ADJ};
 
 static const char MOD_CTRL[] PROGMEM  = "Ctrl";
 static const char MOD_SHIFT[] PROGMEM = "Shift";
@@ -48,8 +49,8 @@ static const char HEART_FRAME_1[] PROGMEM = "\x04"; // bigger heart glyph
 static const char HEART_FRAME_2[] PROGMEM = "\x03"; // small heart glyph
 static const char HEART_FRAME_3[] PROGMEM = " ";    // off
 
-// --- Modifier array ---
-static const char *const MODS[] PROGMEM = {MOD_CTRL, MOD_SHIFT, MOD_ALT, MOD_GUI};
+static const char *const MODS[] PROGMEM = {MOD_ALT, MOD_CTRL, MOD_SHIFT, MOD_GUI};
+static const uint8_t MOD_MASKS[] PROGMEM = {MOD_MASK_ALT, MOD_MASK_CTRL, MOD_MASK_SHIFT, MOD_MASK_GUI};
 
 // --- Separator array in PROGMEM ---
 static const char SEPARATOR[32] PROGMEM = {[0 ... 31] = 0xFF};
@@ -90,7 +91,7 @@ bool oled_task_left(void) {
         char        modbuf[8];
         const char *m = (const char *)pgm_read_ptr(&MODS[i]);
         strcpy_P(modbuf, m);
-        oled_write_ln(modbuf, mods & (MOD_MASK_CTRL << i));
+        oled_write_ln(modbuf, mods & pgm_read_byte(&MOD_MASKS[i]));
     }
 
 #ifdef WPM_ENABLE
@@ -104,7 +105,7 @@ bool oled_task_left(void) {
 #endif
 
     oled_set_cursor(0, ROW_BOTTOM);
-    oled_write_P(is_caps_word_on() ? CAPS_STR : KM_STR, false);
+    oled_write_P(caps_word_active() ? CAPS_STR : KM_STR, false);
 
     switch (heartbeat_frame) {
         case 0:

@@ -5,6 +5,7 @@
 
 void        draw_separator(uint8_t row);
 const char *get_layer_name(void);
+bool        caps_word_active(void);
 
 #ifdef OLED_ENABLE
 bool            oled_task_user(void);
