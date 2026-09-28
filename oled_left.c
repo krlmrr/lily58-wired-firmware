@@ -29,7 +29,7 @@ static const char LAYER_LIN[] PROGMEM   = "Linux";
 static const char LAYER_GAME[] PROGMEM  = "Game";
 static const char LAYER_LOWER[] PROGMEM = "LOWER";
 static const char LAYER_RAISE[] PROGMEM = "RAISE";
-static const char LAYER_ADJ[] PROGMEM   = "ADJUST";
+static const char LAYER_ADJ[] PROGMEM   = "ADJ";
 
 // --- Layer array ---
 static const char *const LAYERS[] PROGMEM = {LAYER_BASE, LAYER_WIN, LAYER_LIN, LAYER_GAME, LAYER_LOWER, LAYER_RAISE, LAYER_ADJ};

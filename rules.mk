@@ -14,6 +14,7 @@ OLED_ENABLE = yes           # OLED display
 WPM_ENABLE = yes            # Words Per Minute feature
 CAPS_WORD_ENABLE = yes      # Caps Word feature
 COMBO_ENABLE = yes
+KEY_OVERRIDE_ENABLE = yes
 MAGIC_ENABLE = no
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
