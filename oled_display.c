@@ -24,6 +24,9 @@ static void receive_caps_word(uint8_t in_len, const void *in_data, uint8_t out_l
 
 void keyboard_post_init_user(void) {
     transaction_register_rpc(USER_SYNC_CAPS_WORD, receive_caps_word);
+    if (!autocorrect_is_enabled()) {
+        autocorrect_enable();
+    }
 }
 
 void housekeeping_task_user(void) {
