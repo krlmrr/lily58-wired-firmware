@@ -60,6 +60,14 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_
     return 0;
 }
 
+bool get_speculative_hold(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == MT(MOD_LCTL, KC_ESC)) {
+        return false;
+    }
+    const uint8_t mods = mod_config(QK_MOD_TAP_GET_MODS(keycode));
+    return (mods & (MOD_LCTL | MOD_LSFT)) == (mods & (MOD_HYPR));
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
