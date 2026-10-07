@@ -99,9 +99,9 @@ const key_override_t *key_overrides[] = {
 
 // Thumb rows shared across base layers so positions stay identical on every OS
 #define LAYOUT_wrapper(...) LAYOUT(__VA_ARGS__)
-#define THUMBS_MAC  OS_HYPR, KC_LALT, MO(_RAISE), MT(MOD_LGUI, KC_SPC), KC_SPC, MO(_LOWER), KC_RALT, MY_MEH
-#define THUMBS_PC   OS_HYPR, KC_LALT, MO(_RAISE), MT(MOD_LCTL, KC_SPC), MT(MOD_RCTL, KC_SPC), MO(_LOWER), KC_RALT, KC_LGUI
-#define THUMBS_GAME KC_LGUI, KC_LALT, MO(_RAISE), KC_SPC, KC_SPC, MO(_LOWER), KC_RALT, KC_LGUI
+#define THUMBS_MAC  OS_HYPR, KC_LALT, MO(_RAISE), MT(MOD_LGUI, KC_SPC), KC_SPC, MO(_LOWER), KC_LALT, MY_MEH
+#define THUMBS_PC   OS_HYPR, KC_LALT, MO(_RAISE), MT(MOD_LCTL, KC_SPC), MT(MOD_RCTL, KC_SPC), MO(_LOWER), KC_LALT, KC_LGUI
+#define THUMBS_GAME KC_LGUI, KC_LALT, MO(_RAISE), KC_SPC, KC_SPC, MO(_LOWER), KC_LALT, KC_LGUI
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_wrapper(
